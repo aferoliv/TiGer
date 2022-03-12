@@ -38,8 +38,8 @@ class Tela:
         #
         # Botões e Texto no MasterFrame
         #
-        self.botaoSair = tk.Button(master, text='     Sair    ', command=master.destroy),
-        #self.botaoSair.grid(column=10, row=12)
+        self.botaoSair = tk.Button(master, text='     Sair    ', command=master.destroy)
+        self.botaoSair.grid(column=10, row=12)
         self.botaoCalc = tk.Button(master, text='  Calcular   ', command=self.Calcular)
         self.botaoCalc.grid(column=4, row=12)
         #
@@ -125,21 +125,16 @@ class Tela:
         biblioteca=self.biblioteca
         intermediario = Br.BronstedDados(biblioteca,selecao)
         print('numero especie', self.numero_especieAD)
-        if self.numero_especieAD < 8:
-            selecionadoAD[self.numero_especieAD] = intermediario.valores.tolist()
-            print('selecao AD: ', selecao, 'biblioteca: ',self.tipo_bib, selecionadoAD[self.numero_especieAD])
-        #
-        # tentativa de eliminar o 'nan' das linhas
-        #
-            for item,i in enumerate(selecionadoAD[self.numero_especieAD]):
-                if item=='nan':
-                    item=''
-                    selecionadoAD[self.numero_especieAD][i]=item
         ######################
         #
         # imprime a linha na tabela AD
+        ################
+        if self.numero_especieAD < 8:
+            selecionadoAD[self.numero_especieAD] = [biblioteca, selecao]
+            linha = intermediario.valores.tolist()
+            print('selecao AD: ', selecao, 'biblioteca: ',self.tipo_bib, linha)
             self.selecao_tabela.insert(parent='', index='end', iid=self.numero_especieAD, text='',
-                       values=selecionadoAD[self.numero_especieAD])
+                       values=linha)
 
     def InsereNT(self):
         self.tipo_bib = lista_biblioteca[self.combo.current()]
@@ -149,10 +144,11 @@ class Tela:
         intermediario = Br.BronstedDados(biblioteca, selecao)
         print('numero especie', self.numero_especieNT)
         if self.numero_especieNT<3:
-            selecionadoNT[self.numero_especieNT] = intermediario.valores.tolist()
-            print('selecao AD: ', selecao, 'biblioteca: ',self.tipo_bib, selecionadoNT[self.numero_especieNT])
+            selecionadoNT[self.numero_especieNT]=[biblioteca,selecao]
+            linha = intermediario.valores.tolist()
+            print('selecao AD: ', selecao, 'biblioteca: ',self.tipo_bib, linha)
             self.selecao_tabelaNT.insert(parent='', index='end', iid=self.numero_especieNT, text='',
-                                   values=selecionadoNT[self.numero_especieNT])
+                                   values=linha)
 
 
     def TabelaAD(self,master):
@@ -196,10 +192,9 @@ class Tela:
         self.selecao_tabelaNT.grid(column=1, row=5)
 
     def Calcular(self):
-        print(self.numero_especieAD, self.numero_especieNT)
-
-
-
+        sistemaAD=[]
+        sistemaNT=[]
+        print('Dados AD: ',selecionadoAD[1],'número AD',self.numero_especieAD, 'Dados NT', selecionadoNT, 'numero NT',self.numero_especieNT)
     def ButtonSair(self):
         #
         master.destroy
